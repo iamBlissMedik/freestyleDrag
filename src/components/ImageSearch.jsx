@@ -31,6 +31,6 @@ const ImageSearch = ({ searchText }) => {
 };
 export default ImageSearch;
 
-// ImageSearch.prototype = {
-//   searchText: PropTypes.string.isRequired,
-// };
+ImageSearch.prototype = {
+  searchText: PropTypes.string.isRequired,
+};
