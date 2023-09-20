@@ -3,7 +3,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import ImageSearch from "./ImageSearch";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
@@ -17,6 +23,14 @@ const HomePage = () => {
   const [images, setImages] = useState([]);
   const [isLoadingg, setIsLoading] = useState(true);
   const [term, setTerm] = useState("");
+  const mouse = useSensor(MouseSensor),
+    touch = useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    });
+  const sensors = useSensors(mouse, touch);
   const onDragEnd = (e) => {
     const { active, over } = e;
     if (active.id === over.id) {
@@ -53,7 +67,11 @@ const HomePage = () => {
         <div className="text-6xl text-center mx-auto mt-32">Loading..</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={onDragEnd}
+          >
             <SortableContext items={images} strategy={rectSortingStrategy}>
               {images.map((image) => (
                 <SortableUser key={image.id} image={image} />
