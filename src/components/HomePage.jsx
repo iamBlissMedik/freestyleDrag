@@ -9,6 +9,7 @@ import {
   TouchSensor,
   closestCenter,
   useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
